@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content1 %}
+<div class="container my-5">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Emp_ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Address</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for st in employee %}
+        <tr>
+          <th>{{st.id}}</th>
+          <td>{{st.fname}}</td>
+          <td>{{st.lname}}</td>
+          <td>{{st.age}}</td>
+          <td>{{st.address}}</td>
+          <td>
+            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal{{st.id}}">View</button>
+                    <div class="modal fade" id="viewModal{{st.id}}" tabindex="-1" aria-labelledby="viewModalLabel{{st.id}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="viewModalLabel{{st.id}}">Employee Name : {{st.fname}} {{st.lname}}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table>
+                                    <tbody>
+                                        <thead>
+                                            <tr><th> Employee ID </th><td><strong>&nbsp;:</strong>&nbsp; {{st.id}} </td></tr>
+                                            <tr><th> Age </th><td><strong>&nbsp;:</strong>&nbsp; {{st.age}} </td></tr>
+                                            <tr><th> Address </th><td><strong>&nbsp;:</strong>&nbsp; {{st.address}} </td></tr>
+                                        </thead>
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+            <a href="{% url 'update' st.id %}" class="btn btn-dark btn-sm">Update</a>
+
+            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{st.id}}">Delete</button>
+                <div class="modal fade" id="deleteModal{{st.id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{st.id}}" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLabel{{st.id}}">Confirmation For Delete</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <p>Are you sure ? Following data will be permanantly deleted !!!</p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="{% url 'delete' st.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+          </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content1 %}
